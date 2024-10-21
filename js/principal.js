@@ -27,11 +27,15 @@ function ocultarAlerta() {
 }
 
 function logout(result) {
-    const url = 'http://localhost:8082/login/logout';
+    //MEDIANTE WEB CLIENT
+    //const url = 'http://localhost:8082/login/logout';
+  
+    //URL Feign
+    const url = "http://localhost:8082/login/log_out_feign";
 
     axios.post(url, result.usuario)
       .then(async function (response) {
-        
+        console.log(response)
         if(!response.status === 200) {
           Swal.fire({
             title: "Ocurrio una excepción",
@@ -40,17 +44,8 @@ function logout(result) {
           });
           throw new Error(`Error: ${response.statusText}`);
         }
-
-        if (response.data.codigo === '00') {
-          localStorage.removeItem("result")
-          window.location.replace('index.html');
-        } else {
-          Swal.fire({
-            title: "Ocurrio una excepción",
-            text: "No puede cerrar sesion",
-            icon: "error"
-          });          
-        }
+        localStorage.removeItem("result")
+        window.location.replace('index.html');
       })
       .catch(function (error) {
         console.log(error);
